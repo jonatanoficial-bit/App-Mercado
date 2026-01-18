@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Administração</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+
+<header class="app-header">
+  <button onclick="history.back()" class="icon-button">←</button>
+  <h1 class="app-title">Admin</h1>
+</header>
+
+<main class="app-content">
+
+  <section id="loginSection" class="card">
+    <h2 class="section-title">Login</h2>
+
+    <div class="input-group">
+      <label>Senha</label>
+      <input type="password" id="adminPassword" />
+    </div>
+
+    <button id="loginBtn" class="primary-button full-width">Entrar</button>
+  </section>
+
+  <section id="adminPanel" class="card" style="display:none">
+    <h2 class="section-title">DLCs / Expansões</h2>
+
+    <div id="dlcList"></div>
+
+    <div class="actions">
+      <label class="file-upload">
+        <input type="file" id="uploadDlcInput" accept=".json" hidden />
+        <span class="primary-button">Enviar DLC</span>
+      </label>
+
+      <button id="exportDataBtn" class="secondary-button">Exportar Dados</button>
+      <button id="importDataBtn" class="secondary-button">Importar Dados</button>
+    </div>
+  </section>
+
+</main>
+
+<script src="js/dlc-loader.js"></script>
+<script src="js/admin.js"></script>
+</body>
+</html>
