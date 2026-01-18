@@ -3,48 +3,80 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Administração</title>
+  <title>Área Administrativa</title>
   <link rel="stylesheet" href="css/styles.css" />
 </head>
 <body>
+  <header class="app-header">
+    <button id="backBtn" class="icon-button" aria-label="Voltar">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22" height="22"
+        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+        aria-hidden="true">
+        <polyline points="15 18 9 12 15 6" />
+      </svg>
+    </button>
+    <h1 class="app-title">Área Administrativa</h1>
 
-<header class="app-header">
-  <button onclick="history.back()" class="icon-button">←</button>
-  <h1 class="app-title">Admin</h1>
-</header>
+    <span id="proBadgeAdmin" class="badge badge-pro" style="display:none;">PRO</span>
+  </header>
 
-<main class="app-content">
+  <main class="app-content">
 
-  <section id="loginSection" class="card">
-    <h2 class="section-title">Login</h2>
+    <section id="loginSection" class="login-section card">
+      <h2 class="section-title">Login do Administrador</h2>
+      <div class="input-group">
+        <label for="adminPassword">Senha</label>
+        <input type="password" id="adminPassword" />
+      </div>
+      <button id="loginBtn" class="primary-button full-width">Entrar</button>
+      <p class="subtle" style="margin:0;">
+        Padrão inicial: <strong>1234</strong> (você pode trocar depois).
+      </p>
+    </section>
 
-    <div class="input-group">
-      <label>Senha</label>
-      <input type="password" id="adminPassword" />
-    </div>
+    <section id="adminPanel" class="admin-panel card" style="display:none;">
+      <h2 class="section-title">Gerenciar Conteúdo</h2>
 
-    <button id="loginBtn" class="primary-button full-width">Entrar</button>
-  </section>
+      <!-- PRO -->
+      <div class="card" style="padding:14px; margin:0; background: rgba(255,255,255,.05); border-color: rgba(47,224,180,.25);">
+        <div style="display:flex; gap:12px; align-items:flex-start; justify-content:space-between; flex-wrap: wrap;">
+          <div>
+            <div style="font-weight:820;">Plano PRO</div>
+            <div class="subtle">Ativa DLCs e remove limites do Free.</div>
+          </div>
+          <div style="display:flex; gap:10px; flex-wrap: wrap; align-items:center;">
+            <input id="proCodeInput" placeholder="Código PRO (ex: VALE-PRO)" style="min-width:220px;" />
+            <button id="applyProBtn" class="primary-button">Ativar</button>
+            <button id="removeProBtn" class="danger-button">Remover</button>
+          </div>
+        </div>
+      </div>
 
-  <section id="adminPanel" class="card" style="display:none">
-    <h2 class="section-title">DLCs / Expansões</h2>
+      <!-- DLCs -->
+      <div style="margin-top:12px;">
+        <div class="subtle" style="margin-bottom:10px;">
+          DLCs são módulos de conteúdo carregados dinamicamente. No plano Free, elas ficam bloqueadas.
+        </div>
+        <div class="dlc-list" id="dlcList"></div>
+      </div>
 
-    <div id="dlcList"></div>
+      <div class="actions" style="margin-top:12px;">
+        <label class="file-upload">
+          <input type="file" id="uploadDlcInput" accept=".json" style="display:none;" />
+          <span class="primary-button">Enviar DLC</span>
+        </label>
+        <button id="exportDataBtn" class="secondary-button">Exportar Dados</button>
+        <button id="importDataBtn" class="secondary-button">Importar Dados</button>
+      </div>
 
-    <div class="actions">
-      <label class="file-upload">
-        <input type="file" id="uploadDlcInput" accept=".json" hidden />
-        <span class="primary-button">Enviar DLC</span>
-      </label>
+      <p class="subtle" style="margin:10px 0 0;">
+        Dica: Exportar/Importar facilita backup e migração. No futuro, dá para ligar isso a um backend.
+      </p>
+    </section>
+  </main>
 
-      <button id="exportDataBtn" class="secondary-button">Exportar Dados</button>
-      <button id="importDataBtn" class="secondary-button">Importar Dados</button>
-    </div>
-  </section>
-
-</main>
-
-<script src="js/dlc-loader.js"></script>
-<script src="js/admin.js"></script>
+  <script src="js/dlc-loader.js"></script>
+  <script src="js/commerce.js"></script>
+  <script src="js/admin.js"></script>
 </body>
 </html>
