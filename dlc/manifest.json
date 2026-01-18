@@ -1,0 +1,18 @@
+[
+  {
+    "id": "nutrition",
+    "name": "Guia de Nutrição",
+    "version": "1.0.0",
+    "description": "Sugestões de alimentos saudáveis",
+    "file": "nutrition_guide.json",
+    "active": false
+  },
+  {
+    "id": "holiday",
+    "name": "Receitas Festivas",
+    "version": "1.0.0",
+    "description": "Itens típicos de datas especiais",
+    "file": "holiday_recipes.json",
+    "active": false
+  }
+]
