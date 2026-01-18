@@ -3,183 +3,201 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Lista de Compras</title>
-
-  <!-- Fonte (opcional). Se quiser 100% offline, pode remover esta linha -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-
+  <title>Lista de Compras Premium</title>
   <link rel="stylesheet" href="style.css" />
 
-  <!-- jsPDF (para exportar PDF). Se não carregar, o app avisa e não quebra -->
+  <!-- PDF -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 
-<body class="cinematic">
-  <div class="bg-layer" aria-hidden="true"></div>
+<body>
+  <div class="bg"></div>
 
-  <div class="app-container">
-    <header class="app-header">
-      <div class="title-wrap">
-        <h1>Lista de Compras</h1>
-        <p class="subtitle">Simples, bonita e feita para usar no celular.</p>
+  <header class="hero">
+    <div class="hero__glass">
+      <div class="hero__top">
+        <div class="brand">
+          <div class="brand__dot"></div>
+          <div>
+            <h1 class="brand__title">Lista de Compras</h1>
+            <p class="brand__subtitle">Premium • simples, bonita e feita pra celular</p>
+          </div>
+        </div>
+
+        <div class="controls">
+          <div class="selectWrap">
+            <label class="miniLabel" for="themeSelect">Tema</label>
+            <select id="themeSelect" class="select">
+              <option value="cinematic">Cinemático</option>
+              <option value="claro">Claro</option>
+            </select>
+          </div>
+
+          <button class="iconBtn" id="btnHelp" type="button" aria-label="Ajuda">
+            ?
+          </button>
+        </div>
       </div>
 
-      <div class="theme-selector">
-        <label for="theme-select">Tema</label>
-        <select id="theme-select">
-          <option value="cinematic" selected>Cinemático</option>
-          <option value="homey">Caseiro</option>
-        </select>
+      <div class="hero__badges">
+        <span class="badge">✅ Salva por mês</span>
+        <span class="badge">📌 Total automático</span>
+        <span class="badge">📄 Exporta PDF</span>
       </div>
-    </header>
+    </div>
+  </header>
 
-    <main class="app-main">
-      <section class="card budget-card">
-        <div class="card-title">
-          <span class="dot"></span>
-          <h2>Orçamento do mês</h2>
+  <main class="wrap" id="pdfArea">
+
+    <!-- CARD: MÊS + ORÇAMENTO -->
+    <section class="card">
+      <div class="card__header">
+        <h2 class="card__title">Orçamento do mês</h2>
+        <p class="card__hint">Escolha o mês e defina quanto pretende gastar.</p>
+      </div>
+
+      <div class="grid grid--2">
+        <div class="field">
+          <label for="mesAno">Mês/Ano</label>
+          <input id="mesAno" type="month" />
         </div>
 
-        <label class="label" for="budget-input">Saldo previsto (R$)</label>
-        <div class="row">
-          <input type="number" id="budget-input" min="0" step="0.01" placeholder="Ex.: 500" inputmode="decimal" />
+        <div class="field">
+          <label for="saldoPrevisto">Saldo previsto (R$)</label>
+          <input id="saldoPrevisto" type="number" step="0.01" placeholder="Ex: 500" />
+          <small class="field__tip">Dica: coloque aqui quanto você pretende gastar no mês.</small>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button class="btn btn--soft" id="btnCarregar" type="button">Abrir Lista</button>
+        <button class="btn btn--primary" id="btnSalvar" type="button">Salvar Lista</button>
+        <button class="btn btn--danger" id="btnLimpar" type="button">Limpar Mês</button>
+      </div>
+    </section>
+
+    <!-- CARD: ADICIONAR ITEM -->
+    <section class="card">
+      <div class="card__header">
+        <h2 class="card__title">Adicionar item</h2>
+        <p class="card__hint">Preencha e toque em <b>Adicionar</b>.</p>
+      </div>
+
+      <div class="grid grid--3">
+        <div class="field">
+          <label for="produto">Produto</label>
+          <input id="produto" type="text" placeholder="Ex.: Arroz" />
         </div>
 
-        <div class="hint">
-          Dica: coloque aqui quanto você pretende gastar no mês.
-        </div>
-      </section>
-
-      <section class="card add-card">
-        <div class="card-title">
-          <span class="dot"></span>
-          <h2>Adicionar item</h2>
+        <div class="field">
+          <label for="quantidade">Quantidade</label>
+          <input id="quantidade" type="number" placeholder="1" />
         </div>
 
-        <div class="grid">
-          <div class="field">
-            <label class="label" for="product-name">Produto</label>
-            <input type="text" id="product-name" placeholder="Ex.: Arroz" autocomplete="off" />
+        <div class="field">
+          <label for="preco">Valor unitário (R$)</label>
+          <input id="preco" type="number" step="0.01" placeholder="Ex.: 12,90" />
+        </div>
+      </div>
+
+      <div class="actions actions--right">
+        <button class="btn btn--primary" id="btnAdicionar" type="button">+ Adicionar</button>
+      </div>
+
+      <div class="note">
+        Você pode adicionar quantos itens quiser. O total e o saldo atualizam automaticamente.
+      </div>
+    </section>
+
+    <!-- CARD: LISTA -->
+    <section class="card">
+      <div class="card__header">
+        <h2 class="card__title">Sua lista</h2>
+        <p class="card__hint">Toque em remover para excluir um item.</p>
+      </div>
+
+      <div class="tableWrap">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Produto</th>
+              <th>Qtd</th>
+              <th>Valor</th>
+              <th>Total</th>
+              <th>Ação</th>
+            </tr>
+          </thead>
+          <tbody id="listaItens"></tbody>
+        </table>
+
+        <div id="emptyState" class="emptyState">
+          <div class="emptyState__icon">🧺</div>
+          <div>
+            <div class="emptyState__title">Nenhum item ainda</div>
+            <div class="emptyState__text">Adicione o primeiro item acima ☝️</div>
           </div>
+        </div>
+      </div>
 
-          <div class="field">
-            <label class="label" for="product-quantity">Quantidade</label>
-            <input type="number" id="product-quantity" min="1" value="1" inputmode="numeric" />
-          </div>
-
-          <div class="field">
-            <label class="label" for="product-price">Valor unitário (R$)</label>
-            <input type="number" id="product-price" step="0.01" placeholder="Ex.: 12,90" inputmode="decimal" />
-          </div>
-
-          <button id="add-item-btn" class="btn btn-primary">
-            <span class="btn-ic" aria-hidden="true">
-              <!-- ícone + -->
-              <svg viewBox="0 0 24 24" width="18" height="18" fill="none">
-                <path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-              </svg>
-            </span>
-            Adicionar
-          </button>
+      <div class="summary">
+        <div class="summary__box">
+          <div class="summary__label">Total gasto</div>
+          <div class="summary__value">R$ <span id="resumoTotal">0,00</span></div>
         </div>
 
-        <div class="hint">
-          Você pode adicionar quantos itens quiser. O total e o saldo atualizam automaticamente.
-        </div>
-      </section>
-
-      <section class="card list-card">
-        <div class="card-title">
-          <span class="dot"></span>
-          <h2>Sua lista</h2>
+        <div class="summary__box">
+          <div class="summary__label">Saldo previsto</div>
+          <div class="summary__value">R$ <span id="resumoSaldo">0,00</span></div>
         </div>
 
-        <div class="list-head">
-          <span>Produto</span>
-          <span class="col">Qtd</span>
-          <span class="col">Valor</span>
-          <span class="col">Total</span>
-          <span class="col action">Ação</span>
+        <div class="summary__box summary__box--highlight" id="diffBox">
+          <div class="summary__label">Saldo restante</div>
+          <div class="summary__value">R$ <span id="resumoDiferenca">0,00</span></div>
         </div>
+      </div>
 
-        <ul id="item-list" class="item-list"></ul>
+      <div class="actions actions--right">
+        <button class="btn btn--pdf" id="btnPdf" type="button">Exportar PDF</button>
+      </div>
 
-        <div class="empty" id="empty-state">
-          Nenhum item ainda. Adicione o primeiro acima 👆
-        </div>
-      </section>
+      <footer class="foot">
+        Feito para ser fácil. Funciona no celular e no computador.
+      </footer>
+    </section>
+  </main>
 
-      <section class="card summary-card">
-        <div class="summary">
-          <div class="sum-box">
-            <div class="sum-label">Total gasto</div>
-            <div class="sum-value">R$ <span id="total-spent">0,00</span></div>
-          </div>
-
-          <div class="sum-box">
-            <div class="sum-label">Saldo restante</div>
-            <div class="sum-value">R$ <span id="remaining-balance">0,00</span></div>
-          </div>
-        </div>
-
-        <div class="hint" id="pdf-status"></div>
-      </section>
-
-      <section class="card actions-card">
-        <div class="card-title">
-          <span class="dot"></span>
-          <h2>Salvar / Abrir / PDF</h2>
-        </div>
-
-        <div class="actions">
-          <div class="field">
-            <label class="label" for="month-select">Mês</label>
-            <select id="month-select"></select>
-          </div>
-
-          <button id="save-list-btn" class="btn btn-dark">
-            <span class="btn-ic" aria-hidden="true">
-              <!-- ícone salvar -->
-              <svg viewBox="0 0 24 24" width="18" height="18" fill="none">
-                <path d="M5 21h14a1 1 0 0 0 1-1V8l-4-4H6a1 1 0 0 0-1 1v15a1 1 0 0 0 1 1Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
-                <path d="M8 21v-8h8v8" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
-                <path d="M9 4v4h6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-              </svg>
-            </span>
-            Salvar Lista
-          </button>
-
-          <button id="load-list-btn" class="btn btn-dark">
-            <span class="btn-ic" aria-hidden="true">
-              <!-- ícone pasta -->
-              <svg viewBox="0 0 24 24" width="18" height="18" fill="none">
-                <path d="M3 7a2 2 0 0 1 2-2h5l2 2h7a2 2 0 0 1 2 2v8a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3V7Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
-              </svg>
-            </span>
-            Abrir Lista
-          </button>
-
-          <button id="export-pdf-btn" class="btn btn-pdf">
-            <span class="btn-ic" aria-hidden="true">
-              <!-- ícone pdf -->
-              <svg viewBox="0 0 24 24" width="18" height="18" fill="none">
-                <path d="M7 3h7l5 5v13a1 1 0 0 1-1 1H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
-                <path d="M14 3v5h5" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
-                <path d="M7 17h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-              </svg>
-            </span>
-            Exportar PDF
-          </button>
-        </div>
-      </section>
-    </main>
-
-    <footer class="app-footer">
-      <span>Feito para ser fácil. Funciona no celular e no computador.</span>
-    </footer>
+  <!-- TOAST -->
+  <div class="toast" id="toast" role="status" aria-live="polite">
+    <div class="toast__dot"></div>
+    <div class="toast__text" id="toastText">Pronto.</div>
   </div>
+
+  <!-- MODAL -->
+  <div class="modal" id="modal">
+    <div class="modal__overlay" data-close="1"></div>
+    <div class="modal__card">
+      <div class="modal__title" id="modalTitle">Confirmar</div>
+      <div class="modal__text" id="modalText">Tem certeza?</div>
+      <div class="modal__actions">
+        <button class="btn btn--soft" id="modalCancel" type="button">Cancelar</button>
+        <button class="btn btn--danger" id="modalOk" type="button">Confirmar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- HELP MODAL CONTENT -->
+  <template id="helpContent">
+    <div>
+      <b>Dicas rápidas</b>
+      <ul style="margin:10px 0 0 18px">
+        <li>Escolha o mês e coloque o saldo previsto.</li>
+        <li>Adicione itens: produto, quantidade e valor.</li>
+        <li>Salve para guardar no seu celular/computador.</li>
+        <li>Exportar PDF gera um arquivo com sua lista.</li>
+      </ul>
+    </div>
+  </template>
 
   <script src="script.js"></script>
 </body>
