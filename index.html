@@ -3,202 +3,102 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Lista de Compras Premium</title>
-  <link rel="stylesheet" href="style.css" />
+  <title>Lista de Compras</title>
 
-  <!-- PDF -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <link rel="stylesheet" href="css/styles.css" />
 </head>
-
 <body>
-  <div class="bg"></div>
+  <header class="app-header">
+    <h1 class="app-title">Lista de Compras</h1>
 
-  <header class="hero">
-    <div class="hero__glass">
-      <div class="hero__top">
-        <div class="brand">
-          <div class="brand__dot"></div>
-          <div>
-            <h1 class="brand__title">Lista de Compras</h1>
-            <p class="brand__subtitle">Premium • simples, bonita e feita pra celular</p>
-          </div>
-        </div>
-
-        <div class="controls">
-          <div class="selectWrap">
-            <label class="miniLabel" for="themeSelect">Tema</label>
-            <select id="themeSelect" class="select">
-              <option value="cinematic">Cinemático</option>
-              <option value="claro">Claro</option>
-            </select>
-          </div>
-
-          <button class="iconBtn" id="btnHelp" type="button" aria-label="Ajuda">
-            ?
-          </button>
-        </div>
-      </div>
-
-      <div class="hero__badges">
-        <span class="badge">✅ Salva por mês</span>
-        <span class="badge">📌 Total automático</span>
-        <span class="badge">📄 Exporta PDF</span>
-      </div>
-    </div>
+    <button id="adminBtn" class="icon-button" aria-label="Área Administrativa">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"
+        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="3"></circle>
+        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06
+          a2 2 0 1 1-2.83 2.83l-.06-.06
+          a1.65 1.65 0 0 0-1.82-.33
+          1.65 1.65 0 0 0-1 1.51V21
+          a2 2 0 0 1-4 0v-.09
+          a1.65 1.65 0 0 0-1-1.51
+          1.65 1.65 0 0 0-1.82.33l-.06.06
+          a2 2 0 1 1-2.83-2.83l.06-.06
+          a1.65 1.65 0 0 0 .33-1.82
+          1.65 1.65 0 0 0-1.51-1H3
+          a2 2 0 0 1 0-4h.09
+          a1.65 1.65 0 0 0 1.51-1
+          1.65 1.65 0 0 0-.33-1.82l-.06-.06
+          a2 2 0 0 1 2.83-2.83l.06.06
+          a1.65 1.65 0 0 0 1.82.33
+          a1.65 1.65 0 0 0 1.15-1.7V3
+          a2 2 0 0 1 4 0v.09
+          a1.65 1.65 0 0 0 1.15 1.7
+          a1.65 1.65 0 0 0 1.82-.33l.06-.06
+          a2 2 0 1 1 2.83 2.83l-.06.06
+          a1.65 1.65 0 0 0-.33 1.82
+          a1.65 1.65 0 0 0 1.7 1.15H21
+          a2 2 0 0 1 0 4h-.09
+          a1.65 1.65 0 0 0-1.7 1.15z">
+        </path>
+      </svg>
+    </button>
   </header>
 
-  <main class="wrap" id="pdfArea">
+  <main class="app-content">
 
-    <!-- CARD: MÊS + ORÇAMENTO -->
     <section class="card">
-      <div class="card__header">
-        <h2 class="card__title">Orçamento do mês</h2>
-        <p class="card__hint">Escolha o mês e defina quanto pretende gastar.</p>
+      <h2 class="section-title">Adicionar Item</h2>
+
+      <div class="input-group">
+        <label>Item</label>
+        <input id="itemName" type="text" placeholder="Ex: Arroz" />
       </div>
 
-      <div class="grid grid--2">
-        <div class="field">
-          <label for="mesAno">Mês/Ano</label>
-          <input id="mesAno" type="month" />
+      <div class="input-row">
+        <div class="input-group">
+          <label>Quantidade</label>
+          <input id="itemQuantity" type="number" min="1" value="1" />
         </div>
 
-        <div class="field">
-          <label for="saldoPrevisto">Saldo previsto (R$)</label>
-          <input id="saldoPrevisto" type="number" step="0.01" placeholder="Ex: 500" />
-          <small class="field__tip">Dica: coloque aqui quanto você pretende gastar no mês.</small>
+        <div class="input-group">
+          <label>Preço (R$)</label>
+          <input id="itemPrice" type="number" min="0" step="0.01" />
         </div>
+      </div>
+
+      <button id="addItemBtn" class="primary-button full-width">
+        Adicionar Item
+      </button>
+    </section>
+
+    <section class="card">
+      <h2 class="section-title">Itens da Lista</h2>
+      <div id="itemList" class="item-list"></div>
+
+      <div class="list-summary">
+        <span>Total</span>
+        <span id="totalValue">R$ 0,00</span>
       </div>
 
       <div class="actions">
-        <button class="btn btn--soft" id="btnCarregar" type="button">Abrir Lista</button>
-        <button class="btn btn--primary" id="btnSalvar" type="button">Salvar Lista</button>
-        <button class="btn btn--danger" id="btnLimpar" type="button">Limpar Mês</button>
+        <button id="saveListBtn" class="secondary-button">Salvar Lista</button>
+        <button id="exportPdfBtn" class="secondary-button">Exportar PDF</button>
+        <button id="clearListBtn" class="danger-button">Limpar</button>
       </div>
     </section>
 
-    <!-- CARD: ADICIONAR ITEM -->
     <section class="card">
-      <div class="card__header">
-        <h2 class="card__title">Adicionar item</h2>
-        <p class="card__hint">Preencha e toque em <b>Adicionar</b>.</p>
-      </div>
-
-      <div class="grid grid--3">
-        <div class="field">
-          <label for="produto">Produto</label>
-          <input id="produto" type="text" placeholder="Ex.: Arroz" />
-        </div>
-
-        <div class="field">
-          <label for="quantidade">Quantidade</label>
-          <input id="quantidade" type="number" placeholder="1" />
-        </div>
-
-        <div class="field">
-          <label for="preco">Valor unitário (R$)</label>
-          <input id="preco" type="number" step="0.01" placeholder="Ex.: 12,90" />
-        </div>
-      </div>
-
-      <div class="actions actions--right">
-        <button class="btn btn--primary" id="btnAdicionar" type="button">+ Adicionar</button>
-      </div>
-
-      <div class="note">
-        Você pode adicionar quantos itens quiser. O total e o saldo atualizam automaticamente.
-      </div>
+      <h2 class="section-title">Minhas Listas</h2>
+      <div id="savedLists"></div>
     </section>
 
-    <!-- CARD: LISTA -->
-    <section class="card">
-      <div class="card__header">
-        <h2 class="card__title">Sua lista</h2>
-        <p class="card__hint">Toque em remover para excluir um item.</p>
-      </div>
-
-      <div class="tableWrap">
-        <table class="table">
-          <thead>
-            <tr>
-              <th>Produto</th>
-              <th>Qtd</th>
-              <th>Valor</th>
-              <th>Total</th>
-              <th>Ação</th>
-            </tr>
-          </thead>
-          <tbody id="listaItens"></tbody>
-        </table>
-
-        <div id="emptyState" class="emptyState">
-          <div class="emptyState__icon">🧺</div>
-          <div>
-            <div class="emptyState__title">Nenhum item ainda</div>
-            <div class="emptyState__text">Adicione o primeiro item acima ☝️</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="summary">
-        <div class="summary__box">
-          <div class="summary__label">Total gasto</div>
-          <div class="summary__value">R$ <span id="resumoTotal">0,00</span></div>
-        </div>
-
-        <div class="summary__box">
-          <div class="summary__label">Saldo previsto</div>
-          <div class="summary__value">R$ <span id="resumoSaldo">0,00</span></div>
-        </div>
-
-        <div class="summary__box summary__box--highlight" id="diffBox">
-          <div class="summary__label">Saldo restante</div>
-          <div class="summary__value">R$ <span id="resumoDiferenca">0,00</span></div>
-        </div>
-      </div>
-
-      <div class="actions actions--right">
-        <button class="btn btn--pdf" id="btnPdf" type="button">Exportar PDF</button>
-      </div>
-
-      <footer class="foot">
-        Feito para ser fácil. Funciona no celular e no computador.
-      </footer>
-    </section>
   </main>
 
-  <!-- TOAST -->
-  <div class="toast" id="toast" role="status" aria-live="polite">
-    <div class="toast__dot"></div>
-    <div class="toast__text" id="toastText">Pronto.</div>
-  </div>
+  <script src="js/dlc-loader.js"></script>
+  <script src="js/app.js"></script>
 
-  <!-- MODAL -->
-  <div class="modal" id="modal">
-    <div class="modal__overlay" data-close="1"></div>
-    <div class="modal__card">
-      <div class="modal__title" id="modalTitle">Confirmar</div>
-      <div class="modal__text" id="modalText">Tem certeza?</div>
-      <div class="modal__actions">
-        <button class="btn btn--soft" id="modalCancel" type="button">Cancelar</button>
-        <button class="btn btn--danger" id="modalOk" type="button">Confirmar</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- HELP MODAL CONTENT -->
-  <template id="helpContent">
-    <div>
-      <b>Dicas rápidas</b>
-      <ul style="margin:10px 0 0 18px">
-        <li>Escolha o mês e coloque o saldo previsto.</li>
-        <li>Adicione itens: produto, quantidade e valor.</li>
-        <li>Salve para guardar no seu celular/computador.</li>
-        <li>Exportar PDF gera um arquivo com sua lista.</li>
-      </ul>
-    </div>
-  </template>
-
-  <script src="script.js"></script>
+  <!-- PDF -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
 </body>
 </html>
