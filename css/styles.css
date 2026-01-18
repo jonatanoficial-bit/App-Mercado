@@ -1,0 +1,109 @@
+/* styles.css – UI premium AAA */
+
+:root {
+  --primary: #2563eb;
+  --danger: #dc2626;
+  --bg: #f9fafb;
+  --card: #ffffff;
+  --radius: 14px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, sans-serif;
+  background: linear-gradient(180deg,#eef2ff,#ffffff);
+  color: #111827;
+}
+
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background: rgba(255,255,255,0.9);
+  backdrop-filter: blur(10px);
+}
+
+.app-title {
+  font-size: 1.6rem;
+}
+
+.app-content {
+  max-width: 720px;
+  margin: auto;
+  padding: 1rem;
+  display: grid;
+  gap: 1rem;
+}
+
+.card {
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 1rem;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: .25rem;
+}
+
+.input-row {
+  display: flex;
+  gap: .5rem;
+}
+
+input {
+  padding: .6rem;
+  font-size: 1rem;
+}
+
+.primary-button,
+.secondary-button,
+.danger-button {
+  padding: .7rem 1rem;
+  border-radius: var(--radius);
+  border: none;
+  cursor: pointer;
+}
+
+.primary-button {
+  background: var(--primary);
+  color: #fff;
+}
+
+.secondary-button {
+  background: #6b7280;
+  color: #fff;
+}
+
+.danger-button {
+  background: var(--danger);
+  color: #fff;
+}
+
+.item-card,
+.saved-list-card,
+.dlc-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: .7rem;
+  border-radius: var(--radius);
+  background: #f3f4f6;
+  margin-top: .5rem;
+}
+
+.icon-button {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: none;
+  background: transparent;
+  font-size: 1.2rem;
+}
