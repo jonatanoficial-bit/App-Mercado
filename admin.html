@@ -3,105 +3,63 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#0B1220" />
   <title>Administração</title>
-
-  <link rel="icon" href="assets/icons/app-icon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="css/styles.css" />
 </head>
 
 <body>
   <header class="app-header">
-    <div class="header-left">
-      <button id="backBtn" class="icon-button" aria-label="Voltar" type="button">
-        <img src="assets/icons/back.svg" alt="" />
-      </button>
-
+    <div class="brand">
+      <img
+        class="brand-logo"
+        src="assets/brand/vale-games-logo.jpg"
+        alt="VALE GAMES"
+        loading="eager"
+        onerror="this.style.display='none'; document.getElementById('brandFallback').style.display='block';"
+      />
       <div class="brand-text">
-        <h1 class="app-title">Admin</h1>
-        <p class="app-subtitle">Conteúdo, DLCs e licença</p>
+        <div class="brand-name">VALE GAMES</div>
+        <div class="brand-sub" id="brandFallback" style="display:none;">Logo não carregou</div>
+        <div class="brand-sub">Área Administrativa</div>
       </div>
     </div>
 
-    <div class="header-right">
-      <button id="logoutBtn" class="chip-button" type="button" aria-label="Sair">
-        <img src="assets/icons/logout.svg" alt="" />
-        <span>Sair</span>
+    <div class="header-actions">
+      <button id="backBtn" class="icon-button" aria-label="Voltar" title="Voltar">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22" height="22"
+          fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="15 18 9 12 15 6" />
+        </svg>
       </button>
     </div>
   </header>
 
   <main class="app-content">
-    <!-- Login -->
-    <section id="loginSection" class="card glass">
-      <div class="section-head">
-        <h2 class="section-title">Login do Administrador</h2>
-        <span class="section-hint">Local (pronto para evoluir depois)</span>
-      </div>
+    <section id="loginSection" class="login-section card">
+      <h2 class="section-title">Login do Administrador</h2>
 
       <div class="input-group">
         <label for="adminPassword">Senha</label>
-        <input type="password" id="adminPassword" placeholder="Digite a senha" />
-        <small class="helper">Senha padrão: <strong>1234</strong> (troque depois)</small>
+        <input type="password" id="adminPassword" />
       </div>
 
-      <button id="loginBtn" class="primary-button full-width" type="button">
-        <img src="assets/icons/lock.svg" alt="" />
-        <span>Entrar</span>
-      </button>
+      <button id="loginBtn" class="primary-button full-width">Entrar</button>
     </section>
 
-    <!-- Painel -->
-    <section id="adminPanel" class="card glass" style="display:none;">
-      <div class="section-head">
-        <h2 class="section-title">Gerenciar Conteúdo (DLC)</h2>
-        <span class="section-hint">Ativar, remover, instalar e marcar como premium</span>
-      </div>
+    <section id="adminPanel" class="admin-panel card" style="display: none;">
+      <h2 class="section-title">Gerenciar Conteúdo</h2>
+      <div class="dlc-list" id="dlcList"></div>
 
-      <div class="license-box">
-        <div class="license-left">
-          <div class="license-title">Licença Premium</div>
-          <div class="license-status" id="licenseStatus">Não ativada</div>
-        </div>
-
-        <div class="license-right">
-          <button id="activateLicenseBtn" class="secondary-button" type="button">
-            <img src="assets/icons/key.svg" alt="" />
-            <span>Ativar</span>
-          </button>
-        </div>
-      </div>
-
-      <div id="dlcList" class="dlc-list"></div>
-
-      <div class="admin-actions">
-        <label class="primary-button file-button" role="button" tabindex="0">
-          <input type="file" id="uploadDlcInput" accept=".json" hidden />
-          <img src="assets/icons/upload.svg" alt="" />
-          <span>Enviar DLC (.json)</span>
+      <div class="admin-actions actions">
+        <label class="file-upload">
+          <input type="file" id="uploadDlcInput" accept=".json" style="display:none;" />
+          <span class="primary-button">Enviar DLC</span>
         </label>
 
-        <button id="exportDataBtn" class="secondary-button" type="button">
-          <img src="assets/icons/download.svg" alt="" />
-          <span>Exportar Dados</span>
-        </button>
-
-        <label class="secondary-button file-button" role="button" tabindex="0">
-          <input type="file" id="importDataInput" accept=".json" hidden />
-          <img src="assets/icons/upload.svg" alt="" />
-          <span>Importar Dados</span>
-        </label>
-      </div>
-
-      <div class="divider"></div>
-
-      <div class="admin-footnote">
-        Dica comercial: marque DLC como <strong>Premium</strong> para exigir licença.
+        <button id="exportDataBtn" class="secondary-button">Exportar Dados</button>
+        <button id="importDataBtn" class="secondary-button">Importar Dados</button>
       </div>
     </section>
-
-    <!-- Toast -->
-    <div id="toast" class="toast" role="status" aria-live="polite" aria-atomic="true"></div>
   </main>
 
   <script src="js/dlc-loader.js"></script>
